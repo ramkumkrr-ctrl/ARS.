@@ -1,1 +1,807 @@
+ <!DOCTYPE html>
+<html lang="ta" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ARS JEWELLERS KARUR - Mobile Application</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Cinzel, Montserrat, Cormorant Garamond, Noto Sans Tamil -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#FFF8E7',
+                            200: '#FBE8B5',
+                            300: '#F3D47F',
+                            400: '#FFD700',
+                            500: '#E5C158',
+                            600: '#C89D29',
+                            700: '#A17B16',
+                            800: '#6E520A',
+                            900: '#3B2A02'
+                        },
+                        silk: {
+                            950: '#060607',
+                            900: '#0A0A0B',
+                            800: '#121214',
+                            700: '#1C1C20',
+                            600: '#2A2A30'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['"Cinzel"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                        tamil: ['"Noto Sans Tamil"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5C158;
+            border-radius: 2px;
+        }
+
+        /* Gold Gradient Text */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFD700 35%, #E5C158 70%, #A17B16 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Gold Shimmer Button */
+        .btn-gold-shimmer {
+            background: linear-gradient(90deg, #A17B16 0%, #FFD700 35%, #FFF8E7 50%, #FFD700 65%, #A17B16 100%);
+            background-size: 200% 100%;
+            transition: all 0.3s ease;
+        }
+        .btn-gold-shimmer:active, .btn-gold-shimmer:hover {
+            background-position: 100% 0;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Dark Glass Cards */
+        .glass-card {
+            background: rgba(18, 18, 20, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 193, 88, 0.25);
+        }
+
+        /* Mobile App Frame Styling */
+        .app-shadow {
+            box-shadow: 0 25px 60px -15px rgba(255, 215, 0, 0.15), 0 0 40px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Silk Background Pattern */
+        .silk-bg {
+            background-color: #0A0A0B;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(229, 193, 88, 0.06) 0%, transparent 40%),
+                linear-gradient(180deg, #0A0A0B 0%, #060607 100%);
+        }
+
+        /* Pulse Animation for Live Rate Indicator */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .pulse-dot {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-silk-950 text-gold-100 font-sans antialiased min-h-screen flex items-center justify-center p-0 md:p-6 silk-bg select-none">
+
+    <!-- DESKTOP CONTAINER SIMULATOR MOCKUP -->
+    <div class="w-full max-w-md h-screen md:h-[844px] bg-silk-900 border-0 md:border-[8px] md:border-silk-700 md:rounded-[48px] overflow-hidden flex flex-col relative app-shadow transition-all">
+        
+        <!-- PHONE TOP STATUS BAR -->
+        <div class="bg-silk-950 text-gold-300 px-6 pt-3 pb-1 flex justify-between items-center text-[11px] font-semibold tracking-wider shrink-0 border-b border-gold-500/10 z-30">
+            <span id="liveClock">09:41 AM</span>
+            <div class="flex items-center space-x-1.5 text-xs text-gold-400">
+                <i class="fa-solid fa-signal"></i>
+                <i class="fa-solid fa-wifi"></i>
+                <i class="fa-solid fa-battery-full text-sm"></i>
+            </div>
+        </div>
+
+        <!-- APP BRANDING HEADER (MATCHING LOGO EXACTLY) -->
+        <header class="bg-silk-950/95 border-b border-gold-500/25 px-4 py-2.5 shrink-0 z-30 backdrop-blur-md">
+            <div class="flex items-center justify-between">
+                
+                <!-- BRAND LOGO SVG RECREATION -->
+                <div class="flex items-center">
+                    <svg class="w-44 h-auto" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="goldGradApp" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFF8E7"/>
+                                <stop offset="30%" stop-color="#FFD700"/>
+                                <stop offset="70%" stop-color="#E5C158"/>
+                                <stop offset="100%" stop-color="#A17B16"/>
+                            </linearGradient>
+                            <linearGradient id="diamondGradApp" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFFFFF"/>
+                                <stop offset="100%" stop-color="#B0D8FF"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Intertwined Gold Ring Arc -->
+                        <path d="M 120 65 C 120 10, 270 5, 270 42 C 270 70, 150 110, 280 110 C 310 110, 335 80, 330 55" stroke="url(#goldGradApp)" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+                        
+                        <!-- Diamond Cap -->
+                        <g transform="translate(268, 2) scale(0.75)">
+                            <polygon points="20,0 40,0 52,18 20,48 -12,18" fill="url(#diamondGradApp)" stroke="#FFD700" stroke-width="1.5"/>
+                            <path d="M 20 22 C 18 18, 14 18, 13 21 C 12 24, 20 29, 20 29 C 20 29, 28 24, 27 21 C 26 18, 22 18, 20 22 Z" fill="#0A0A0B"/>
+                        </g>
+
+                        <!-- ARS Main Letters -->
+                        <text x="200" y="76" text-anchor="middle" font-family="'Cinzel', serif" font-weight="900" font-size="72" fill="url(#goldGradApp)" letter-spacing="2">ARS</text>
+                        <!-- JEWELLERS -->
+                        <text x="200" y="102" text-anchor="middle" font-family="'Cinzel', serif" font-weight="700" font-size="19" fill="url(#goldGradApp)" letter-spacing="6">JEWELLERS</text>
+                        <!-- Tamil கரூர் Divider -->
+                        <line x1="100" y1="114" x2="165" y2="114" stroke="url(#goldGradApp)" stroke-width="1.2"/>
+                        <text x="200" y="118" text-anchor="middle" font-family="'Noto Sans Tamil', sans-serif" font-weight="700" font-size="14" fill="url(#goldGradApp)">கரூர்</text>
+                        <line x1="235" y1="114" x2="300" y2="114" stroke="url(#goldGradApp)" stroke-width="1.2"/>
+                    </svg>
+                </div>
+
+                <!-- QUICK ACTION PHONE & WHATSAPP BUTTONS -->
+                <div class="flex items-center space-x-2">
+                    <a href="tel:9994766291" class="w-8 h-8 rounded-full bg-gold-400/10 border border-gold-400/40 text-gold-400 flex items-center justify-center text-xs hover:bg-gold-400 hover:text-silk-950 transition-all">
+                        <i class="fa-solid fa-phone"></i>
+                    </a>
+                    <a href="https://wa.me/919994766291?text=Hello%20ARS%20Jewellers%20Karur,%20I%20am%20using%20the%20mobile%20app." target="_blank" class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 flex items-center justify-center text-xs hover:bg-emerald-500 hover:text-white transition-all">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- LIVE GOLD & SILVER RATE TICKER HEADER BANNER -->
+            <div class="mt-2 bg-silk-900 rounded-lg p-2 border border-gold-500/20 flex items-center justify-between text-[11px] font-medium">
+                <div class="flex items-center space-x-1.5 text-gold-400">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
+                    <span class="font-tamil font-bold text-[10px]">இன்றைய விலை:</span>
+                </div>
+                <div class="flex items-center space-x-3 text-[11px]">
+                    <span class="text-gold-200">22K Gold (1g): <strong class="text-gold-400 font-bold">₹6,685</strong> <i class="fa-solid fa-caret-up text-emerald-400 text-[10px]"></i></span>
+                    <span class="text-gold-200">Silver: <strong class="text-gold-300 font-bold">₹98.50</strong></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN SCROLLABLE APP BODY -->
+        <main id="appMainContent" class="flex-1 overflow-y-auto p-4 space-y-5 pb-24">
+            
+            <!-- TAB 1: HOME DASHBOARD -->
+            <div id="tabHome" class="tab-content space-y-5">
+                
+                <!-- HERO CAROUSEL / OFFER BANNER -->
+                <div class="relative rounded-2xl overflow-hidden glass-card p-5 border border-gold-400/30">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gold-400/10 rounded-full blur-2xl pointer-events-none"></div>
+                    
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-400 text-[10px] font-bold uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-crown mr-1"></i> கரூர் நம்பகமான நகை மாளிகை
+                    </span>
+
+                    <h2 class="font-cinzel text-xl font-bold text-gold-100 leading-tight mb-1">
+                        100% BIS 916 <span class="gold-gradient-text">ஹால்மார்க்</span> தங்க நகைகள்
+                    </h2>
+                    
+                    <p class="font-tamil text-xs text-gold-200/90 mb-4 leading-relaxed">
+                        அனைத்து சுப முகூர்த்த ஆபரணங்கள், வைரம் மற்றும் ஆன்டிக் நகைகள் குறைந்த செய்கூலி & சேதாரத்தில்!
+                    </p>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="switchTab('tabScheme')" class="flex-1 btn-gold-shimmer text-silk-950 font-bold py-2.5 px-3 rounded-xl text-xs uppercase tracking-wider shadow-lg flex items-center justify-center">
+                            <i class="fa-solid fa-piggy-bank mr-1.5 text-sm"></i> தங்க சேமிப்பு திட்டம்
+                        </button>
+                        <button onclick="switchTab('tabCatalog')" class="px-3 py-2.5 rounded-xl border border-gold-400/40 text-gold-300 text-xs font-semibold hover:bg-gold-400/10">
+                            நகைகள் <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QUICK ACTION GRID -->
+                <div class="grid grid-cols-4 gap-2.5 text-center">
+                    <button onclick="switchTab('tabCatalog')" class="p-3 rounded-xl glass-card border border-gold-500/20 hover:border-gold-400/60 transition-all flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-400 flex items-center justify-center text-sm mb-1.5">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <span class="font-tamil text-[11px] text-gold-200 font-medium">நகைகள்</span>
+                    </button>
+
+                    <button onclick="switchTab('tabScheme')" class="p-3 rounded-xl glass-card border border-gold-500/20 hover:border-gold-400/60 transition-all flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-400 flex items-center justify-center text-sm mb-1.5">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <span class="font-tamil text-[11px] text-gold-200 font-medium">சேமிப்பு</span>
+                    </button>
+
+                    <button onclick="switchTab('tabRates')" class="p-3 rounded-xl glass-card border border-gold-500/20 hover:border-gold-400/60 transition-all flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-400 flex items-center justify-center text-sm mb-1.5">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <span class="font-tamil text-[11px] text-gold-200 font-medium">மதிப்பீடு</span>
+                    </button>
+
+                    <button onclick="openAppointmentModal()" class="p-3 rounded-xl glass-card border border-gold-500/20 hover:border-gold-400/60 transition-all flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-400 flex items-center justify-center text-sm mb-1.5">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <span class="font-tamil text-[11px] text-gold-200 font-medium">VIP Visit</span>
+                    </button>
+                </div>
+
+                <!-- FEATURED BRIDAL COLLECTION QUICK PREVIEW -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-cinzel text-sm font-bold text-gold-200 uppercase tracking-wider">
+                            <i class="fa-solid fa-sparkles text-gold-400 mr-1"></i> சிறப்பம்சங்கள் (Bridal)
+                        </h3>
+                        <button onclick="switchTab('tabCatalog')" class="text-[11px] text-gold-400 font-semibold font-tamil">அனைத்தும் பார்க்க &rarr;</button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3" id="homeFeaturedGrid">
+                        <!-- Populated via Javascript -->
+                    </div>
+                </div>
+
+                <!-- GOLD SAVINGS SCHEME PROMO CARD -->
+                <div class="glass-card p-4 rounded-xl border border-gold-400/30 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-gold-400/15 border border-gold-400/40 flex items-center justify-center text-gold-400 text-xl shrink-0">
+                        <i class="fa-solid fa-gift"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-tamil font-bold text-xs text-gold-200">11 மாத தங்க சேமிப்பு திட்டம்</h4>
+                        <p class="font-tamil text-[11px] text-gold-300/80">0% செய்கூலி சேதாரம் & சிறப்பு போனஸ் தங்கம்!</p>
+                        <button onclick="switchTab('tabScheme')" class="mt-2 text-xs font-bold text-gold-400 underline decoration-gold-400/40 font-tamil">
+                            இப்போதே சேமிக்க தொடங்குங்கள் &rarr;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TAB 2: GOLD SAVINGS SCHEME (தங்க சேமிப்புத் திட்டம்) -->
+            <div id="tabScheme" class="tab-content hidden space-y-5">
+                
+                <!-- SCHEME TITLE CARD -->
+                <div class="glass-card p-5 rounded-2xl border border-gold-400/30">
+                    <span class="text-[10px] font-bold text-gold-400 uppercase tracking-widest block mb-1">ARS Savings Scheme Portal</span>
+                    <h2 class="font-cinzel text-xl font-bold text-gold-100">தங்க நகை சேமிப்புத் திட்டம்</h2>
+                    <p class="font-tamil text-xs text-gold-200/90 mt-1">
+                        மாதம் ₹1,000 முதல் சேமித்து 11 மாத முடிவில் செய்கூலி சேதாரம் இன்றி நகைகளை தேர்வு செய்யுங்கள்!
+                    </p>
+                </div>
+
+                <!-- DIGI PASSBOOK DEMO MOCK CARD -->
+                <div class="bg-gradient-to-br from-gold-900/60 via-silk-800 to-silk-950 p-4 rounded-2xl border border-gold-400/40 shadow-xl relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-[10px] text-gold-400 uppercase font-bold tracking-wider">Digital Passbook</span>
+                            <h4 class="font-tamil text-sm font-bold text-gold-100">அகிலா கே. (Karur)</h4>
+                            <span class="text-[10px] text-gold-300 font-mono">A/C: ARS-2026-8891</span>
+                        </div>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/40">ACTIVE</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-center bg-silk-950/80 p-3 rounded-xl border border-gold-500/20 mb-3">
+                        <div>
+                            <span class="text-[10px] text-gold-300 font-tamil block">செலுத்திய மாதங்கள்</span>
+                            <span class="font-cinzel font-bold text-sm text-gold-100">7 / 11 Months</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-gold-300 font-tamil block">சேமித்த தொகை</span>
+                            <span class="font-cinzel font-bold text-sm text-gold-400">₹35,000</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openPayEmiModal()" class="w-full btn-gold-shimmer text-silk-950 font-bold py-2 text-xs uppercase tracking-wider rounded-lg shadow">
+                        <i class="fa-solid fa-credit-card mr-1.5"></i> தவணை செலுத்த (Pay EMI Online)
+                    </button>
+                </div>
+
+                <!-- SCHEME CALCULATOR TOOL -->
+                <div class="glass-card p-5 rounded-2xl border border-gold-400/30 space-y-4">
+                    <h3 class="font-cinzel text-sm font-bold text-gold-200 border-b border-gold-500/20 pb-2">
+                        சேமிப்பு கணக்கீடு (Scheme Calculator)
+                    </h3>
+
+                    <div>
+                        <label class="block font-tamil text-xs text-gold-300 mb-2">மாதாந்திர சேமிப்பு தொகை (Monthly EMI):</label>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button onclick="setAppSchemeAmount(1000)" class="app-scheme-btn border border-gold-400/30 py-2 rounded-lg text-xs text-gold-200 font-bold hover:border-gold-400">₹1,000</button>
+                            <button onclick="setAppSchemeAmount(2000)" class="app-scheme-btn border border-gold-400/30 py-2 rounded-lg text-xs text-gold-200 font-bold hover:border-gold-400">₹2,000</button>
+                            <button onclick="setAppSchemeAmount(5000)" class="app-scheme-btn border-2 border-gold-400 py-2 rounded-lg text-xs text-gold-400 bg-gold-400/10 font-bold">₹5,000</button>
+                            <button onclick="setAppSchemeAmount(10000)" class="app-scheme-btn border border-gold-400/30 py-2 rounded-lg text-xs text-gold-200 font-bold hover:border-gold-400">₹10,000</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-silk-950 p-3.5 rounded-xl border border-gold-500/20 space-y-2 text-xs font-tamil">
+                        <div class="flex justify-between text-gold-200">
+                            <span>மொத்த செலுத்தும் தொகை (11 மாதங்கள்):</span>
+                            <span id="appSchemeTotal" class="font-bold text-gold-300 font-mono">₹55,000</span>
+                        </div>
+                        <div class="flex justify-between text-emerald-400">
+                            <span>ARS சலுகை / Bonus:</span>
+                            <span class="font-bold">1 மாத தவணை இலவசம்!</span>
+                        </div>
+                        <div class="flex justify-between text-gold-100 font-bold pt-2 border-t border-gold-500/20 text-xs">
+                            <span>மதிப்பிடப்பட்ட தங்கம் (Est Gold):</span>
+                            <span id="appSchemeGrams" class="text-gold-400 font-mono">~ 8.22 Grams</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openJoinSchemeModal()" class="w-full btn-gold-shimmer text-silk-950 font-bold py-3 text-xs uppercase tracking-wider rounded-xl">
+                        <i class="fa-solid fa-user-plus mr-1.5"></i> இப்போதே புதிய கணக்கு தொடங்க
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- TAB 3: PRODUCT CATALOG (நகைகள்) -->
+            <div id="tabCatalog" class="tab-content hidden space-y-4">
+                
+                <!-- SEARCH BAR & CATEGORY CHIPS -->
+                <div class="space-y-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-gold-400/60 text-xs"></i>
+                        <input type="text" id="appSearchInput" placeholder="தேடுக: ஆரம், வளையல், வைர மோதிரம்..." oninput="filterAppProducts()" class="w-full bg-silk-950 border border-gold-500/30 rounded-xl py-2.5 pl-9 pr-4 text-xs text-gold-100 placeholder-gold-500/40 focus:outline-none focus:border-gold-400">
+                    </div>
+
+                    <!-- Category Horizontal Scroll -->
+                    <div class="flex space-x-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+                        <button onclick="filterAppCategory('All')" class="app-cat-btn px-3 py-1.5 rounded-lg font-bold uppercase whitespace-nowrap bg-gold-400 text-silk-950" data-cat="All">அனைத்தும்</button>
+                        <button onclick="filterAppCategory('Bridal Sets')" class="app-cat-btn px-3 py-1.5 rounded-lg font-semibold uppercase whitespace-nowrap border border-gold-500/30 text-gold-200" data-cat="Bridal Sets">முகூர்த்த ஆரம்</button>
+                        <button onclick="filterAppCategory('Antique')" class="app-cat-btn px-3 py-1.5 rounded-lg font-semibold uppercase whitespace-nowrap border border-gold-500/30 text-gold-200" data-cat="Antique">ஆன்டிக்</button>
+                        <button onclick="filterAppCategory('Chains & Bangles')" class="app-cat-btn px-3 py-1.5 rounded-lg font-semibold uppercase whitespace-nowrap border border-gold-500/30 text-gold-200" data-cat="Chains & Bangles">சங்கிலி & வளையல்</button>
+                        <button onclick="filterAppCategory('Diamonds')" class="app-cat-btn px-3 py-1.5 rounded-lg font-semibold uppercase whitespace-nowrap border border-gold-500/30 text-gold-200" data-cat="Diamonds">வைரம்</button>
+                    </div>
+                </div>
+
+                <!-- PRODUCT CARDS LIST GRID -->
+                <div class="grid grid-cols-2 gap-3" id="appCatalogGrid">
+                    <!-- Dynamic Product Cards -->
+                </div>
+
+            </div>
+
+            <!-- TAB 4: LIVE RATES & CALCULATORS (மதிப்பீடு) -->
+            <div id="tabRates" class="tab-content hidden space-y-5">
+                
+                <!-- LIVE MARKET RATE DETAILED TABLE -->
+                <div class="glass-card p-5 rounded-2xl border border-gold-400/30 space-y-3">
+                    <div class="flex justify-between items-center border-b border-gold-500/20 pb-2">
+                        <h3 class="font-cinzel text-sm font-bold text-gold-200">
+                            <i class="fa-solid fa-chart-line text-gold-400 mr-1.5"></i> கரூர் இன்றைய நேரலை விலை
+                        </h3>
+                        <span class="text-[10px] text-emerald-400 font-bold animate-pulse">● LIVE</span>
+                    </div>
+
+                    <div class="space-y-2 text-xs font-tamil">
+                        <div class="flex justify-between p-2.5 rounded-lg bg-silk-950 border border-gold-500/15">
+                            <span class="text-gold-200 font-semibold">22K 916 Gold (1g):</span>
+                            <span class="text-gold-400 font-bold font-mono">₹6,685</span>
+                        </div>
+                        <div class="flex justify-between p-2.5 rounded-lg bg-silk-950 border border-gold-500/15">
+                            <span class="text-gold-200 font-semibold">24K Pure Gold (1g):</span>
+                            <span class="text-gold-400 font-bold font-mono">₹7,290</span>
+                        </div>
+                        <div class="flex justify-between p-2.5 rounded-lg bg-silk-950 border border-gold-500/15">
+                            <span class="text-gold-200 font-semibold">Silver / வெள்ளி (1g):</span>
+                            <span class="text-gold-300 font-bold font-mono">₹98.50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OLD GOLD EXCHANGE ESTIMATOR CARD -->
+                <div class="glass-card p-5 rounded-2xl border border-gold-400/30 space-y-4">
+                    <h3 class="font-cinzel text-sm font-bold text-gold-200 border-b border-gold-500/20 pb-2">
+                        பழைய தங்கம் மாற்று மதிப்பீடு (Old Gold Value)
+                    </h3>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block font-tamil text-xs text-gold-300 mb-1">தங்கத்தின் எடை (Grams):</label>
+                            <input type="number" id="appOldGoldGrams" value="16" min="1" oninput="calcAppOldGold()" class="w-full bg-silk-950 border border-gold-500/30 rounded-lg p-2.5 text-xs text-gold-100 font-bold font-mono focus:outline-none focus:border-gold-400">
+                        </div>
+
+                        <div>
+                            <label class="block font-tamil text-xs text-gold-300 mb-1">தங்கத்தின் தூய்மை (Purity):</label>
+                            <select id="appOldGoldPurity" onchange="calcAppOldGold()" class="w-full bg-silk-950 border border-gold-500/30 rounded-lg p-2.5 text-xs text-gold-100 font-bold focus:outline-none focus:border-gold-400">
+                                <option value="22">22K / 916 Hallmark (91.6%)</option>
+                                <option value="20">20K / KDM (83.3%)</option>
+                                <option value="18">18K Gold (75.0%)</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-silk-950 p-4 rounded-xl border border-gold-500/30 text-center">
+                            <span class="font-tamil text-[11px] text-gold-300 block mb-1">உத்தேச மாற்று மதிப்பு (Est Exchange Value):</span>
+                            <span id="appEstExchangeVal" class="font-cinzel text-2xl font-bold gold-gradient-text">₹97,868</span>
+                        </div>
+
+                        <a id="appOldGoldWaLink" href="https://wa.me/919994766291?text=Hello%20ARS%20Jewellers,%20I%20want%20to%20exchange%20old%20gold." target="_blank" class="w-full btn-gold-shimmer text-silk-950 font-bold py-2.5 text-xs uppercase tracking-wider rounded-lg block text-center">
+                            <i class="fa-brands fa-whatsapp text-sm mr-1.5"></i> WhatsApp-ல் மதிப்பீடு பெற
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TAB 5: ACCOUNT & STORE INFO (கடை) -->
+            <div id="tabAccount" class="tab-content hidden space-y-5">
+                
+                <!-- SHOWROOM DETAILS -->
+                <div class="glass-card p-5 rounded-2xl border border-gold-400/30 space-y-3">
+                    <span class="text-[10px] text-gold-400 uppercase font-bold tracking-widest block">Showroom Location</span>
+                    <h2 class="font-cinzel text-lg font-bold text-gold-100">ARS JEWELLERS KARUR</h2>
+                    
+                    <div class="space-y-2.5 font-tamil text-xs text-gold-200 pt-2">
+                        <div class="flex items-start space-x-2.5">
+                            <i class="fa-solid fa-location-dot text-gold-400 text-sm mt-0.5"></i>
+                            <span>Karur Main Bazaar, Karur - 639001, Tamil Nadu.</span>
+                        </div>
+                        <div class="flex items-center space-x-2.5">
+                            <i class="fa-solid fa-phone text-gold-400 text-sm"></i>
+                            <span>செல் : <strong class="text-gold-400">99947 66291</strong></span>
+                        </div>
+                        <div class="flex items-center space-x-2.5">
+                            <i class="fa-solid fa-clock text-gold-400 text-sm"></i>
+                            <span>காலை 9:30 AM - இரவு 9:00 PM</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 flex gap-2">
+                        <a href="https://maps.google.com/?q=Karur+Jewellery+Main+Bazaar" target="_blank" class="flex-1 bg-silk-950 border border-gold-500/40 text-gold-300 font-bold py-2 text-xs uppercase tracking-wider rounded-lg text-center">
+                            <i class="fa-solid fa-map-location-dot mr-1"></i> Maps வழி
+                        </a>
+                        <a href="tel:9994766291" class="flex-1 bg-gold-400 text-silk-950 font-bold py-2 text-xs uppercase tracking-wider rounded-lg text-center">
+                            <i class="fa-solid fa-phone mr-1"></i> அழைப்பு
+                        </a>
+                    </div>
+                </div>
+
+                <!-- VIP VISIT APPOINTMENT BOOKING -->
+                <div class="glass-card p-5 rounded-2xl border border-gold-400/30 space-y-3">
+                    <h3 class="font-cinzel text-sm font-bold text-gold-200">
+                        <i class="fa-solid fa-calendar-check text-gold-400 mr-1.5"></i> VIP Visit முன்பதிவு
+                    </h3>
+                    <p class="font-tamil text-xs text-gold-300/80">கடைக்கு வருகை தர நேரம் முன்பதிவு செய்து சிறப்பு கவனம் பெறுங்கள்.</p>
+                    
+                    <button onclick="openAppointmentModal()" class="w-full btn-gold-shimmer text-silk-950 font-bold py-2.5 text-xs uppercase tracking-wider rounded-lg">
+                        நேரம் முன்பதிவு செய்ய
+                    </button>
+                </div>
+
+                <!-- APP FOOTER CERTIFICATION BADGES -->
+                <div class="text-center space-y-2 pt-2">
+                    <span class="inline-block px-3 py-1 rounded-full bg-gold-400/10 border border-gold-400/30 text-gold-400 text-[10px] font-bold">
+                        100% BIS 916 Hallmarked Certified
+                    </span>
+                    <p class="text-[10px] text-gold-500/60 font-mono">ARS JEWELLERS KARUR Mobile UI v2.4</p>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- BOTTOM MOBILE NAVIGATION BAR -->
+        <nav class="absolute bottom-0 inset-x-0 bg-silk-950/95 border-t border-gold-500/25 px-2 py-2 z-40 backdrop-blur-xl flex justify-around items-center text-center">
+            
+            <button onclick="switchTab('tabHome')" class="nav-tab-btn flex flex-col items-center w-16 text-gold-400" data-tab="tabHome">
+                <i class="fa-solid fa-house text-base mb-1"></i>
+                <span class="font-tamil text-[10px] font-bold">முகப்பு</span>
+            </button>
+
+            <button onclick="switchTab('tabScheme')" class="nav-tab-btn flex flex-col items-center w-16 text-gold-500/60 hover:text-gold-300" data-tab="tabScheme">
+                <i class="fa-solid fa-piggy-bank text-base mb-1"></i>
+                <span class="font-tamil text-[10px] font-bold">சேமிப்பு</span>
+            </button>
+
+            <button onclick="switchTab('tabCatalog')" class="nav-tab-btn flex flex-col items-center w-16 text-gold-500/60 hover:text-gold-300" data-tab="tabCatalog">
+                <i class="fa-solid fa-gem text-base mb-1"></i>
+                <span class="font-tamil text-[10px] font-bold">நகைகள்</span>
+            </button>
+
+            <button onclick="switchTab('tabRates')" class="nav-tab-btn flex flex-col items-center w-16 text-gold-500/60 hover:text-gold-300" data-tab="tabRates">
+                <i class="fa-solid fa-calculator text-base mb-1"></i>
+                <span class="font-tamil text-[10px] font-bold">மதிப்பீடு</span>
+            </button>
+
+            <button onclick="switchTab('tabAccount')" class="nav-tab-btn flex flex-col items-center w-16 text-gold-500/60 hover:text-gold-300" data-tab="tabAccount">
+                <i class="fa-solid fa-store text-base mb-1"></i>
+                <span class="font-tamil text-[10px] font-bold">கடை</span>
+            </button>
+
+        </nav>
+
+        <!-- JOIN SCHEME MODAL -->
+        <div id="joinSchemeModal" class="absolute inset-0 bg-silk-950/95 z-50 p-5 flex flex-col justify-center hidden">
+            <div class="glass-card p-5 rounded-2xl border border-gold-400/40 relative">
+                <button onclick="closeModal('joinSchemeModal')" class="absolute top-3 right-3 text-gold-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-cinzel text-base font-bold text-gold-300 mb-4">புதிய சேமிப்பு கணக்கு தொடங்க</h3>
+
+                <form onsubmit="handleJoinSchemeSubmit(event)" class="space-y-3 font-tamil text-xs">
+                    <div>
+                        <label class="block text-gold-300 mb-1">உங்கள் பெயர்:</label>
+                        <input type="text" required placeholder="உதாரணம்: கே. குமார்" class="w-full bg-silk-950 border border-gold-500/30 p-2.5 rounded-lg text-gold-100 focus:outline-none focus:border-gold-400">
+                    </div>
+                    <div>
+                        <label class="block text-gold-300 mb-1">கைப்பேசி எண்:</label>
+                        <input type="tel" required placeholder="99947 66291" class="w-full bg-silk-950 border border-gold-500/30 p-2.5 rounded-lg text-gold-100 focus:outline-none focus:border-gold-400">
+                    </div>
+                    <div>
+                        <label class="block text-gold-300 mb-1">மாதாந்திர தொகை:</label>
+                        <select class="w-full bg-silk-950 border border-gold-500/30 p-2.5 rounded-lg text-gold-100 focus:outline-none focus:border-gold-400">
+                            <option>₹1,000 / மாதம்</option>
+                            <option>₹2,000 / மாதம்</option>
+                            <option selected>₹5,000 / மாதம்</option>
+                            <option>₹10,000 / மாதம்</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full btn-gold-shimmer text-silk-950 font-bold py-3 text-xs uppercase tracking-wider rounded-lg mt-2">
+                        கணக்கு தொடங்க விண்ணப்பிக்க
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIP VISIT APPOINTMENT MODAL -->
+        <div id="appointmentModal" class="absolute inset-0 bg-silk-950/95 z-50 p-5 flex flex-col justify-center hidden">
+            <div class="glass-card p-5 rounded-2xl border border-gold-400/40 relative">
+                <button onclick="closeModal('appointmentModal')" class="absolute top-3 right-3 text-gold-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-cinzel text-base font-bold text-gold-300 mb-4">VIP Visit முன்பதிவு</h3>
+
+                <form onsubmit="handleAppointmentSubmit(event)" class="space-y-3 font-tamil text-xs">
+                    <div>
+                        <label class="block text-gold-300 mb-1">பெயர்:</label>
+                        <input type="text" required placeholder="உங்கள் பெயர்" class="w-full bg-silk-950 border border-gold-500/30 p-2.5 rounded-lg text-gold-100">
+                    </div>
+                    <div>
+                        <label class="block text-gold-300 mb-1">தேதி & நேரம்:</label>
+                        <input type="datetime-local" required class="w-full bg-silk-950 border border-gold-500/30 p-2.5 rounded-lg text-gold-100">
+                    </div>
+                    <button type="submit" class="w-full btn-gold-shimmer text-silk-950 font-bold py-3 text-xs uppercase tracking-wider rounded-lg mt-2">
+                        முன்பதிவு செய்ய
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TOAST NOTIFICATION -->
+        <div id="appToast" class="absolute bottom-16 inset-x-4 bg-silk-950 border border-gold-400/50 p-3 rounded-xl text-gold-300 text-xs font-bold text-center shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 z-50 flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-crown text-gold-400"></i>
+            <span id="appToastMsg">செயல் முடிந்தது</span>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const appProducts = [
+            {
+                id: 101,
+                name: "22K 916 முகூர்த்த தங்க ஆரம்",
+                category: "Bridal Sets",
+                price: 245000,
+                weight: "32g (4 சவரன்)",
+                code: "ARS-B101",
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400"
+            },
+            {
+                id: 102,
+                name: "பாரம்பரிய ஆன்டிக் லக்ஷ்மி ஹாரம்",
+                category: "Antique",
+                price: 184000,
+                weight: "24g (3 சவரன்)",
+                code: "ARS-A102",
+                image: "https://images.unsplash.com/photo-1611591475140-be3872120281?auto=format&fit=crop&q=80&w=400"
+            },
+            {
+                id: 103,
+                name: "சான்றளிக்கப்பட்ட வைர மோதிரம்",
+                category: "Diamonds",
+                price: 68000,
+                weight: "GIA Certified",
+                code: "ARS-D103",
+                image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=400"
+            },
+            {
+                id: 104,
+                name: "22K தங்க கொடி சங்கிலி",
+                category: "Chains & Bangles",
+                price: 122000,
+                weight: "16g (2 சவரன்)",
+                code: "ARS-C104",
+                image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=400"
+            },
+            {
+                id: 105,
+                name: "முகூர்த்த தங்க வளையல்கள்",
+                category: "Chains & Bangles",
+                price: 195000,
+                weight: "24g (3 சவரன்)",
+                code: "ARS-C105",
+                image: "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&q=80&w=400"
+            },
+            {
+                id: 106,
+                name: "வைர அட்டிகை நெக்லஸ்",
+                category: "Diamonds",
+                price: 210000,
+                weight: "VVS Solitaires",
+                code: "ARS-D106",
+                image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=400"
+            }
+        ];
+
+        let activeAppCategory = 'All';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateClock();
+            setInterval(updateClock, 1000);
+            renderHomeFeatured();
+            renderAppCatalog(appProducts);
+            calcAppOldGold();
+        });
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-tab-btn').forEach(b => {
+                if(b.dataset.tab === tabId) {
+                    b.classList.remove('text-gold-500/60');
+                    b.classList.add('text-gold-400');
+                } else {
+                    b.classList.remove('text-gold-400');
+                    b.classList.add('text-gold-500/60');
+                }
+            });
+
+            document.getElementById('appMainContent').scrollTop = 0;
+        }
+
+        function renderHomeFeatured() {
+            const grid = document.getElementById('homeFeaturedGrid');
+            grid.innerHTML = '';
+            appProducts.slice(0, 2).forEach(p => {
+                const el = document.createElement('div');
+                el.className = "glass-card rounded-xl overflow-hidden border border-gold-500/20";
+                el.innerHTML = `
+                    <img src="${p.image}" class="w-full h-28 object-cover">
+                    <div class="p-2.5">
+                        <h4 class="font-tamil font-bold text-[11px] text-gold-200 truncate">${p.name}</h4>
+                        <span class="text-gold-400 font-bold font-mono text-xs">₹${p.price.toLocaleString()}</span>
+                    </div>
+                `;
+                grid.appendChild(el);
+            });
+        }
+
+        function renderAppCatalog(items) {
+            const grid = document.getElementById('appCatalogGrid');
+            grid.innerHTML = '';
+            items.forEach(p => {
+                const el = document.createElement('div');
+                el.className = "glass-card rounded-xl overflow-hidden border border-gold-500/20 flex flex-col justify-between";
+                const waText = encodeURIComponent(`Hello ARS Jewellers Karur, I am inquiring about: ${p.name} (${p.code}) - Weight: ${p.weight}`);
+                
+                el.innerHTML = `
+                    <div class="relative h-32">
+                        <img src="${p.image}" class="w-full h-full object-cover">
+                        <span class="absolute top-1.5 left-1.5 bg-silk-950/90 text-gold-300 text-[9px] font-bold px-1.5 py-0.5 rounded border border-gold-500/30">${p.weight}</span>
+                    </div>
+                    <div class="p-2.5 flex-1 flex flex-col justify-between space-y-2">
+                        <div>
+                            <h4 class="font-tamil font-bold text-xs text-gold-100 leading-snug">${p.name}</h4>
+                            <span class="text-[10px] text-gold-400/80 font-mono">${p.code}</span>
+                        </div>
+                        <div>
+                            <div class="font-mono text-xs font-bold text-gold-300">₹${p.price.toLocaleString()}</div>
+                            <a href="https://wa.me/919994766291?text=${waText}" target="_blank" class="mt-2 w-full bg-emerald-600/90 text-white font-bold py-1.5 rounded text-[10px] uppercase tracking-wider flex items-center justify-center">
+                                <i class="fa-brands fa-whatsapp text-xs mr-1"></i> கேட்க
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(el);
+            });
+        }
+
+        function filterAppCategory(cat) {
+            activeAppCategory = cat;
+            document.querySelectorAll('.app-cat-btn').forEach(b => {
+                if(b.dataset.cat === cat) {
+                    b.className = "app-cat-btn px-3 py-1.5 rounded-lg font-bold uppercase whitespace-nowrap bg-gold-400 text-silk-950";
+                } else {
+                    b.className = "app-cat-btn px-3 py-1.5 rounded-lg font-semibold uppercase whitespace-nowrap border border-gold-500/30 text-gold-200";
+                }
+            });
+            renderAppCatalog(cat === 'All' ? appProducts : appProducts.filter(p => p.category === cat));
+        }
+
+        function filterAppProducts() {
+            const q = document.getElementById('appSearchInput').value.toLowerCase();
+            renderAppCatalog(appProducts.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+        }
+
+        function setAppSchemeAmount(amt) {
+            const total = amt * 11;
+            const grams = (total / 6685).toFixed(2);
+            document.getElementById('appSchemeTotal').textContent = `₹${total.toLocaleString()}`;
+            document.getElementById('appSchemeGrams').textContent = `~ ${grams} Grams`;
+
+            document.querySelectorAll('.app-scheme-btn').forEach(b => {
+                if(b.textContent.includes(amt.toLocaleString())) {
+                    b.className = "app-scheme-btn border-2 border-gold-400 py-2 rounded-lg text-xs text-gold-400 bg-gold-400/10 font-bold";
+                } else {
+                    b.className = "app-scheme-btn border border-gold-400/30 py-2 rounded-lg text-xs text-gold-200 font-bold hover:border-gold-400";
+                }
+            });
+        }
+
+        function calcAppOldGold() {
+            const grams = parseFloat(document.getElementById('appOldGoldGrams').value) || 0;
+            const purity = parseFloat(document.getElementById('appOldGoldPurity').value);
+            const val = Math.round(grams * 6685 * (purity / 22));
+            document.getElementById('appEstExchangeVal').textContent = `₹${val.toLocaleString()}`;
+            
+            document.getElementById('appOldGoldWaLink').href = `https://wa.me/919994766291?text=Hello%20ARS%20Jewellers,%20I%20have%20${grams}g%20old%20gold%20for%20exchange%20valuation.`;
+        }
+
+        function openJoinSchemeModal() { document.getElementById('joinSchemeModal').classList.remove('hidden'); }
+        function openAppointmentModal() { document.getElementById('appointmentModal').classList.remove('hidden'); }
+        function openPayEmiModal() { showAppToast("ARS Payment Gateway Loading..."); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function handleJoinSchemeSubmit(e) {
+            e.preventDefault();
+            closeModal('joinSchemeModal');
+            showAppToast("விண்ணப்பம் பெறப்பட்டது! ARS Jewellers தொடர்புகொள்வார்கள்.");
+        }
+
+        function handleAppointmentSubmit(e) {
+            e.preventDefault();
+            closeModal('appointmentModal');
+            showAppToast("முன்பதிவு உறுதி செய்யப்பட்டது!");
+        }
+
+        function showAppToast(msg) {
+            const t = document.getElementById('appToast');
+            document.getElementById('appToastMsg').textContent = msg;
+            t.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+    </script>
+</body>
+</html>
